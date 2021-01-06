@@ -1,3 +1,7 @@
+//How to store API keys and other data outside of your main code
+//https://github.com/motdotla/dotenv
+require('dotenv').config();
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const https = require("https");
@@ -35,12 +39,14 @@ app.post("/", function(req, res) {
 
   const jsonData = JSON.stringify(data);
 
-  const url = "https://us7.api.mailchimp.com/3.0/lists/29e0e283b7"
+  const url = "https://us7.api.mailchimp.com/3.0/lists/" + process.env.LIST_ID;
 
   const options = {
     method: "POST",
-    auth: "Valvagon:236701e5cbaf865903589880c348af8b-us7"
+    auth: "RequiredUsername:" + process.env.API_KEY
   }
+  console.log("options = " + options.auth);
+  console.log("url = " + url);
 
   const request = https.request(url, options, function(response) {
     console.log("Status Code = " + response.statusCode);
@@ -64,14 +70,6 @@ app.post("/", function(req, res) {
 app.post("/failure", function(req, res) {
   res.redirect("/");
 })
-
-//API Key
-//236701e5cbaf865903589880c348af8b-us7
-
-//List ID
-//29e0e283b7
-
-
 
 
 
